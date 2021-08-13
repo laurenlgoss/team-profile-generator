@@ -6,12 +6,38 @@ const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const Manager = require("./lib/manager");
 
+// Create an array of questions for user input
+const questions = [
+    {
+        type: "input",
+        message: "Enter team manager's name:",
+        name: "managerName",
+    },
+    {
+        type: "input",
+        message: "Enter team manager's employee ID:",
+        name: "managerId",
+    },
+    {
+        type: "input",
+        message: "Enter team manager's email address:",
+        name: "managerEmail",
+    },
+    {
+        type: "input",
+        message: "Enter team manager's office number:",
+        name: "managerOfficeNumber",
+    },
+];
+
 // Initialize inquirer, write HTML with inquirer responses
 function init() {
     inquirer
         .prompt(questions)
         .then((response) => {
-            writeToFile("index.html", generateHtml(response));
+            const newManager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOfficeNumber);
+
+            writeToFile("index.html", generateHtml(newManager));
         });
 }
 
@@ -25,7 +51,7 @@ function writeToFile(fileName, data) {
 }
 
 // Generate HTML
-function generateHtml(response) {
+function generateHtml(manager) {
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -39,7 +65,7 @@ function generateHtml(response) {
     </head>
     
     <body>
-    
+        
     </body>
     
     </html>`;
