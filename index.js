@@ -6,6 +6,7 @@ const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const Manager = require("./lib/manager");
 
+// Initialize inquirer, write HTML with inquirer responses
 function init() {
     inquirer
         .prompt(questions)
@@ -14,6 +15,7 @@ function init() {
         });
 }
 
+// Write new file
 function writeToFile(fileName, data) {
     fs.writeFile(fileName, data, (error) => {
         if (error) {
@@ -22,6 +24,7 @@ function writeToFile(fileName, data) {
     });
 }
 
+// Generate HTML
 function generateHtml(response) {
     return `<!DOCTYPE html>
     <html lang="en">
@@ -41,3 +44,5 @@ function generateHtml(response) {
     
     </html>`;
 }
+
+init();
