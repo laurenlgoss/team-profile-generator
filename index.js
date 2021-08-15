@@ -7,7 +7,7 @@ const Intern = require("./lib/intern");
 const Manager = require("./lib/manager");
 
 // Create an array of questions for user input
-const questions = [
+const managerQuestions = [
     {
         type: "input",
         message: "Enter team manager's name:",
@@ -28,16 +28,84 @@ const questions = [
         message: "Enter team manager's office number:",
         name: "managerOfficeNumber",
     },
+    {
+        type: "list",
+        message: "Choose a new team member, or choose done if there are no more members:",
+        choices: ["Engineer", "Intern", "Done"],
+        name: "next",
+    },
+];
+
+const engineerQuestions = [
+    {
+        type: "input",
+        message: "Enter engineer's name:",
+        name: "engineerName",
+    },
+    {
+        type: "input",
+        message: "Enter engineer's employee ID:",
+        name: "engineerId",
+    },
+    {
+        type: "input",
+        message: "Enter engineer's email address:",
+        name: "engineerEmail",
+    },
+    {
+        type: "input",
+        message: "Enter engineer's GitHub username:",
+        name: "engineerGithub",
+    },
+];
+
+const internQuestions = [
+    {
+        type: "input",
+        message: "Enter intern's name:",
+        name: "internName",
+    },
+    {
+        type: "input",
+        message: "Enter intern's employee ID:",
+        name: "internId",
+    },
+    {
+        type: "input",
+        message: "Enter intern's email address:",
+        name: "internEmail",
+    },
+    {
+        type: "input",
+        message: "Enter intern's school:",
+        name: "internSchool",
+    },
 ];
 
 // Initialize inquirer, write HTML with inquirer responses
 function init() {
     inquirer
-        .prompt(questions)
+        .prompt(managerQuestions)
         .then((response) => {
             const newManager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOfficeNumber);
 
-            writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
+            if (response.next !== "done") {
+                if (response.next === "Engineer") {
+                    inquirer
+                        .prompt(engineerQuestions)
+                        .then((response) => {
+                            writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
+                        })
+                } else if (response.next === "Intern") {
+                    inquirer
+                        .prompt(internQuestions)
+                        .then((response) => {
+                            writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
+                        })
+                }
+            } else {
+                writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
+            }
         });
 }
 
