@@ -1,32 +1,31 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 
-const Employee = require("./lib/employee");
+const Manager = require("./lib/manager");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
-const Manager = require("./lib/manager");
 
 // Create an array of questions for user input
 const managerQuestions = [
     {
         type: "input",
         message: "Enter team manager's name:",
-        name: "managerName",
+        name: "name",
     },
     {
         type: "input",
         message: "Enter team manager's employee ID:",
-        name: "managerId",
+        name: "id",
     },
     {
         type: "input",
         message: "Enter team manager's email address:",
-        name: "managerEmail",
+        name: "email",
     },
     {
         type: "input",
         message: "Enter team manager's office number:",
-        name: "managerOfficeNumber",
+        name: "officeNumber",
     },
     {
         type: "list",
@@ -40,22 +39,22 @@ const engineerQuestions = [
     {
         type: "input",
         message: "Enter engineer's name:",
-        name: "engineerName",
+        name: "name",
     },
     {
         type: "input",
         message: "Enter engineer's employee ID:",
-        name: "engineerId",
+        name: "id",
     },
     {
         type: "input",
         message: "Enter engineer's email address:",
-        name: "engineerEmail",
+        name: "email",
     },
     {
         type: "input",
         message: "Enter engineer's GitHub username:",
-        name: "engineerGithub",
+        name: "github",
     },
 ];
 
@@ -63,22 +62,22 @@ const internQuestions = [
     {
         type: "input",
         message: "Enter intern's name:",
-        name: "internName",
+        name: "name",
     },
     {
         type: "input",
         message: "Enter intern's employee ID:",
-        name: "internId",
+        name: "id",
     },
     {
         type: "input",
         message: "Enter intern's email address:",
-        name: "internEmail",
+        name: "email",
     },
     {
         type: "input",
         message: "Enter intern's school:",
-        name: "internSchool",
+        name: "school",
     },
 ];
 
@@ -87,24 +86,40 @@ function init() {
     inquirer
         .prompt(managerQuestions)
         .then((response) => {
-            const newManager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOfficeNumber);
+            // Create empty employee array
+            let employeeArray = [];
+
+            // Create new manager from inquirer responses
+            let newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
 
             if (response.next !== "done") {
+                // If user chooses engineer,
                 if (response.next === "Engineer") {
                     inquirer
                         .prompt(engineerQuestions)
                         .then((response) => {
-                            writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
+                            // Create new engineer from inquirer responses, push to employeeArray
+                            let newEngineer = new Engineer(response.name, response.id, response.email, response.github);
+                            employeeArray.push(newEngineer);
+
+                            // Write index.html file
+                            writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
                         })
                 } else if (response.next === "Intern") {
                     inquirer
                         .prompt(internQuestions)
                         .then((response) => {
-                            writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
+                            // Create new intern from inquirer responses, push to employeeArray
+                            let newIntern = new Intern(response.name, response.id, response.email, response.school);
+                            employeeArray.push(newIntern);
+
+                            // Write index.html file
+                            writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
                         })
                 }
             } else {
-                writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
+                // Write index.html file
+                writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
             }
         });
 }
@@ -119,21 +134,59 @@ function writeToFile(fileName, data) {
 }
 
 // Generate employee card HTML
-function generateCardHtml(name, role, first, second, third) {
-    return `<div class="card" style="width: 18rem;">
+function generateCardHtml(manager, employees) {
+    // Create empty card array
+    let cardArray = [];
+
+    // Create new arrays for engineers and interns
+    let engineerArray = employees.filter(employee => employee.github);
+    let internArray = employees.filter(employee => employee.school);
+
+    // Push manager card to cardArray
+    cardArray.push(`<div class="card" style="width: 18rem;">
         <div class="card-header">
-            ${name}: ${role}
+            ${manager.name}: ${manager.getRole()}
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">${first}</li>
-            <li class="list-group-item">${second}</li>
-            <li class="list-group-item">${third}</li>
+            <li class="list-group-item">${manager.id}</li>
+            <li class="list-group-item">${manager.email}</li>
+            <li class="list-group-item">${manager.officeNumber}</li>
         </ul>
-    </div>`;
+    </div>`);
+
+    // Push engineer cards to cardArray
+    for (let i = 0; i < engineerArray.length; i++) {
+        cardArray.push(`<div class="card" style="width: 18rem;">
+        <div class="card-header">
+            ${engineerArray[i].name}: ${engineerArray[i].getRole()}
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">${engineerArray[i].id}</li>
+            <li class="list-group-item">${engineerArray[i].email}</li>
+            <li class="list-group-item">${engineerArray[i].github}</li>
+        </ul>
+    </div>`);
+    }
+
+    // Push intern cards to cardArray
+    for (let i = 0; i < internArray.length; i++) {
+        cardArray.push(`<div class="card" style="width: 18rem;">
+        <div class="card-header">
+            ${internArray[i].name}: ${internArray[i].getRole()}
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">${internArray[i].id}</li>
+            <li class="list-group-item">${internArray[i].email}</li>
+            <li class="list-group-item">${internArray[i].school}</li>
+        </ul>
+    </div>`);
+    }
+
+    return cardArray;
 }
 
 // Generate HTML
-function generateHtml(name, role, first, second, third) {
+function generateHtml(employeeCards) {
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -147,7 +200,7 @@ function generateHtml(name, role, first, second, third) {
     </head>
     
     <body>
-        ${generateCardHtml(name, role, first, second, third)}
+        ${employeeCards}
     </body>
     
     </html>`;
