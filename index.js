@@ -92,7 +92,7 @@ function init() {
             // Create new manager from inquirer responses
             let newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
 
-            if (response.next !== "done") {
+            if (response.next !== "Done") {
                 // If user chooses engineer,
                 if (response.next === "Engineer") {
                     inquirer
@@ -148,36 +148,36 @@ function generateCardHtml(manager, employees) {
             ${manager.name}: ${manager.getRole()}
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">${manager.id}</li>
-            <li class="list-group-item">${manager.email}</li>
-            <li class="list-group-item">${manager.officeNumber}</li>
+            <li class="list-group-item">Employee ID: ${manager.id}</li>
+            <li class="list-group-item">Email: ${manager.email}</li>
+            <li class="list-group-item">Office number: ${manager.officeNumber}</li>
         </ul>
     </div>`);
 
     // Push engineer cards to cardArray
     for (let i = 0; i < engineerArray.length; i++) {
-        cardArray.push(`<div class="card" style="width: 18rem;">
+        cardArray.push(`\n  <div class="card" style="width: 18rem;">
         <div class="card-header">
             ${engineerArray[i].name}: ${engineerArray[i].getRole()}
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">${engineerArray[i].id}</li>
-            <li class="list-group-item">${engineerArray[i].email}</li>
-            <li class="list-group-item">${engineerArray[i].github}</li>
+            <li class="list-group-item">Employee ID: ${engineerArray[i].id}</li>
+            <li class="list-group-item">Email: ${engineerArray[i].email}</li>
+            <li class="list-group-item">GitHub username: ${engineerArray[i].github}</li>
         </ul>
     </div>`);
     }
 
     // Push intern cards to cardArray
     for (let i = 0; i < internArray.length; i++) {
-        cardArray.push(`<div class="card" style="width: 18rem;">
+        cardArray.push(`\n  <div class="card" style="width: 18rem;">
         <div class="card-header">
             ${internArray[i].name}: ${internArray[i].getRole()}
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">${internArray[i].id}</li>
-            <li class="list-group-item">${internArray[i].email}</li>
-            <li class="list-group-item">${internArray[i].school}</li>
+            <li class="list-group-item">Employee ID: ${internArray[i].id}</li>
+            <li class="list-group-item">Email: ${internArray[i].email}</li>
+            <li class="list-group-item">School: ${internArray[i].school}</li>
         </ul>
     </div>`);
     }
