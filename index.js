@@ -37,7 +37,7 @@ function init() {
         .then((response) => {
             const newManager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOfficeNumber);
 
-            writeToFile("index.html", generateHtml(newManager));
+            writeToFile("index.html", generateHtml(newManager.name, newManager.getRole(), newManager.id, newManager.email, newManager.officeNumber));
         });
 }
 
@@ -50,8 +50,22 @@ function writeToFile(fileName, data) {
     });
 }
 
+// Generate employee card HTML
+function generateCardHtml(name, role, first, second, third) {
+    return `<div class="card" style="width: 18rem;">
+        <div class="card-header">
+            ${name}: ${role}
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">${first}</li>
+            <li class="list-group-item">${second}</li>
+            <li class="list-group-item">${third}</li>
+        </ul>
+    </div>`;
+}
+
 // Generate HTML
-function generateHtml(manager) {
+function generateHtml(name, role, first, second, third) {
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -65,7 +79,7 @@ function generateHtml(manager) {
     </head>
     
     <body>
-        
+        ${generateCardHtml(name, role, first, second, third)}
     </body>
     
     </html>`;
