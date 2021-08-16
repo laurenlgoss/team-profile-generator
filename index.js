@@ -146,43 +146,43 @@ function generateCardHtml(manager, employeeArray) {
     let internArray = employeeArray.filter(employee => employee.school);
 
     // Push manager card to cardArray
-    cardArray.push(`<div class="card" style="width: 18rem;">
-        <div class="card-header">
-            ${manager.getName()}: ${manager.getRole()}
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Employee ID: ${manager.getId()}</li>
-            <li class="list-group-item">Email: ${manager.getEmail()}</li>
-            <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
-        </ul>
-    </div>`);
+    cardArray.push(`<div class="card col-sm" style="width: 18rem;">
+                    <div class="card-header">
+                        ${manager.getName()}: ${manager.getRole()}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Employee ID: ${manager.getId()}</li>
+                        <li class="list-group-item">Email: ${manager.getEmail()}</li>
+                        <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
+                    </ul>
+                </div>`);
 
     // Push engineer cards to cardArray
     for (let i = 0; i < engineerArray.length; i++) {
-        cardArray.push(`\n  <div class="card" style="width: 18rem;">
-        <div class="card-header">
-            ${engineerArray[i].getName()}: ${engineerArray[i].getRole()}
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Employee ID: ${engineerArray[i].getId()}</li>
-            <li class="list-group-item">Email: ${engineerArray[i].getEmail()}</li>
-            <li class="list-group-item">GitHub username: ${engineerArray[i].getGithub()}</li>
-        </ul>
-    </div>`);
+        cardArray.push(`\n                <div class="card col-sm" style="width: 18rem;">
+                    <div class="card-header">
+                        ${engineerArray[i].getName()}: ${engineerArray[i].getRole()}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Employee ID: ${engineerArray[i].getId()}</li>
+                        <li class="list-group-item">Email: ${engineerArray[i].getEmail()}</li>
+                        <li class="list-group-item">GitHub username: ${engineerArray[i].getGithub()}</li>
+                    </ul>
+                </div>`);
     }
 
     // Push intern cards to cardArray
     for (let i = 0; i < internArray.length; i++) {
-        cardArray.push(`\n  <div class="card" style="width: 18rem;">
-        <div class="card-header">
-            ${internArray[i].getName()}: ${internArray[i].getRole()}
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Employee ID: ${internArray[i].getId()}</li>
-            <li class="list-group-item">Email: ${internArray[i].getEmail()}</li>
-            <li class="list-group-item">School: ${internArray[i].getSchool()}</li>
-        </ul>
-    </div>`);
+        cardArray.push(`\n                <div class="card col-sm" style="width: 18rem;">
+                    <div class="card-header">
+                        ${internArray[i].getName()}: ${internArray[i].getRole()}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Employee ID: ${internArray[i].getId()}</li>
+                        <li class="list-group-item">Email: ${internArray[i].getEmail()}</li>
+                        <li class="list-group-item">School: ${internArray[i].getSchool()}</li>
+                    </ul>
+                </div>`);
     }
 
     return cardArray;
@@ -209,7 +209,11 @@ function generateHtml(cardArray) {
     </header>
 
     <main>
-        ${cardArray}
+        <div class="container">
+            <div class="row">
+                ${cardArray}
+            </div>
+        </div>
     </main>
 </body>
     
