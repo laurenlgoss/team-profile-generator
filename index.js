@@ -5,7 +5,7 @@ const Manager = require("./lib/manager");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 
-// Create an array of questions for user input
+// Create an array of questions to gather manager information
 const managerQuestions = [
     {
         type: "input",
@@ -35,6 +35,7 @@ const managerQuestions = [
     },
 ];
 
+// Create an array of questions to gather engineer information
 const engineerQuestions = [
     {
         type: "input",
@@ -58,6 +59,7 @@ const engineerQuestions = [
     },
 ];
 
+// Create an array of questions to gather intern information
 const internQuestions = [
     {
         type: "input",
@@ -92,6 +94,7 @@ function init() {
             // Create new manager from inquirer responses
             let newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
 
+            // If user is not done creating team,
             if (response.next !== "Done") {
                 // If user chooses engineer,
                 if (response.next === "Engineer") {
@@ -99,19 +102,19 @@ function init() {
                         .prompt(engineerQuestions)
                         .then((response) => {
                             // Create new engineer from inquirer responses, push to employeeArray
-                            let newEngineer = new Engineer(response.name, response.id, response.email, response.github);
-                            employeeArray.push(newEngineer);
+                            employeeArray.push(new Engineer(response.name, response.id, response.email, response.github));
 
                             // Write index.html file
                             writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
                         })
-                } else if (response.next === "Intern") {
+                } 
+                // If user chooses intern,
+                else if (response.next === "Intern") {
                     inquirer
                         .prompt(internQuestions)
                         .then((response) => {
                             // Create new intern from inquirer responses, push to employeeArray
-                            let newIntern = new Intern(response.name, response.id, response.email, response.school);
-                            employeeArray.push(newIntern);
+                            employeeArray.push(new Intern(response.name, response.id, response.email, response.school));
 
                             // Write index.html file
                             writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
@@ -134,13 +137,13 @@ function writeToFile(fileName, data) {
 }
 
 // Generate employee card HTML
-function generateCardHtml(manager, employees) {
+function generateCardHtml(manager, employeeArray) {
     // Create empty card array
     let cardArray = [];
 
     // Create new arrays for engineers and interns
-    let engineerArray = employees.filter(employee => employee.github);
-    let internArray = employees.filter(employee => employee.school);
+    let engineerArray = employeeArray.filter(employee => employee.github);
+    let internArray = employeeArray.filter(employee => employee.school);
 
     // Push manager card to cardArray
     cardArray.push(`<div class="card" style="width: 18rem;">
@@ -186,24 +189,31 @@ function generateCardHtml(manager, employees) {
 }
 
 // Generate HTML
-function generateHtml(employeeCards) {
+function generateHtml(cardArray) {
     return `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="./src/reset.css">
-        <link rel="stylesheet" href="./src/style.css">
-        <title>Document</title>
-    </head>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./src/reset.css">
+    <link rel="stylesheet" href="./src/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1>My Team</h1>
+    </header>
+
+    <main>
+        ${cardArray}
+    </main>
+</body>
     
-    <body>
-        ${employeeCards}
-    </body>
-    
-    </html>`;
+</html>`;
 }
 
 init();

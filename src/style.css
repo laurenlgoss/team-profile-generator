@@ -1,0 +1,9 @@
+header {
+    background-image: linear-gradient(to right, var(--primary), var(--purple));
+}
+
+header h1 {
+    text-align: center;
+    color: white;
+    padding: 10px 0px;
+}
