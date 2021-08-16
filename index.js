@@ -122,7 +122,7 @@ function init() {
                 }
             } else {
                 // Write index.html file
-                writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
+                writeToFile("./dist/index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
             }
         });
 }
@@ -198,8 +198,8 @@ function generateHtml(cardArray) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./src/reset.css">
-    <link rel="stylesheet" href="./src/style.css">
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
 </head>
 
