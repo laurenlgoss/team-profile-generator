@@ -105,7 +105,7 @@ function init() {
                             employeeArray.push(new Engineer(response.name, response.id, response.email, response.github));
 
                             // Write index.html file
-                            writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
+                            writeToFile("./dist/index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
                         })
                 } 
                 // If user chooses intern,
@@ -117,7 +117,7 @@ function init() {
                             employeeArray.push(new Intern(response.name, response.id, response.email, response.school));
 
                             // Write index.html file
-                            writeToFile("index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
+                            writeToFile("./dist/index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
                         })
                 }
             } else {
@@ -153,7 +153,7 @@ function generateCardHtml(manager, employeeArray) {
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Employee ID: ${manager.getId()}</li>
             <li class="list-group-item">Email: ${manager.getEmail()}</li>
-            <li class="list-group-item">Office number: ${manager.officeNumber}</li>
+            <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
         </ul>
     </div>`);
 
