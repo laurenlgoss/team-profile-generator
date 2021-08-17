@@ -5,6 +5,16 @@ const Manager = require("./lib/manager");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 
+// Create empty employee array
+let employeeArray = [];
+
+const nextQuestion = [{
+    type: "list",
+    message: "Choose a new team member, or choose done if there are no more members:",
+    choices: ["Engineer", "Intern", "Done"],
+    name: "next",
+}];
+
 // Create an array of questions to gather manager information
 const managerQuestions = [
     {
@@ -26,12 +36,6 @@ const managerQuestions = [
         type: "input",
         message: "Enter team manager's office number:",
         name: "officeNumber",
-    },
-    {
-        type: "list",
-        message: "Choose a new team member, or choose done if there are no more members:",
-        choices: ["Engineer", "Intern", "Done"],
-        name: "next",
     },
 ];
 
@@ -83,17 +87,10 @@ const internQuestions = [
     },
 ];
 
-// Initialize inquirer, write HTML with inquirer responses
-function init() {
+function mainMenu() {
     inquirer
-        .prompt(managerQuestions)
+        .prompt(nextQuestion)
         .then((response) => {
-            // Create empty employee array
-            let employeeArray = [];
-
-            // Create new manager from inquirer responses
-            let newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
-
             // If user is not done creating team,
             if (response.next !== "Done") {
                 // If user chooses engineer,
@@ -102,28 +99,41 @@ function init() {
                         .prompt(engineerQuestions)
                         .then((response) => {
                             // Create new engineer from inquirer responses, push to employeeArray
-                            employeeArray.push(new Engineer(response.name, response.id, response.email, response.github));
+                            let newEngineer = new Engineer(response.name, response.id, response.email, response.github);
+                            employeeArray.push(newEngineer);
 
-                            // Write index.html file
-                            writeToFile("./dist/index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
+                            return mainMenu();
                         })
-                } 
+                }
                 // If user chooses intern,
                 else if (response.next === "Intern") {
                     inquirer
                         .prompt(internQuestions)
                         .then((response) => {
                             // Create new intern from inquirer responses, push to employeeArray
-                            employeeArray.push(new Intern(response.name, response.id, response.email, response.school));
+                            let newIntern = new Intern(response.name, response.id, response.email, response.school);
+                            employeeArray.push(newIntern);
 
-                            // Write index.html file
-                            writeToFile("./dist/index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
+                            return mainMenu();
                         })
                 }
             } else {
                 // Write index.html file
-                writeToFile("./dist/index.html", generateHtml(generateCardHtml(newManager, employeeArray)));
+                writeToFile("./dist/index.html", generateHtml(generateCardHtml(employeeArray)));
             }
+        })
+}
+
+// Initialize inquirer, write HTML with inquirer responses
+function init() {
+    inquirer
+        .prompt(managerQuestions)
+        .then((response) => {
+            // Create new manager from inquirer responses
+            let newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
+            employeeArray.push(newManager);
+
+            return mainMenu();
         });
 }
 
@@ -137,23 +147,24 @@ function writeToFile(fileName, data) {
 }
 
 // Generate employee card HTML
-function generateCardHtml(manager, employeeArray) {
+function generateCardHtml(employeeArray) {
     // Create empty card array
     let cardArray = [];
 
     // Create new arrays for engineers and interns
-    let engineerArray = employeeArray.filter(employee => employee.github);
-    let internArray = employeeArray.filter(employee => employee.school);
+    let manager = employeeArray.filter(employee => employee.getRole() === "Manager");
+    let engineerArray = employeeArray.filter(employee => employee.getRole() === "Engineer");
+    let internArray = employeeArray.filter(employee => employee.getRole() === "Intern");
 
     // Push manager card to cardArray
     cardArray.push(`<div class="card col-sm" style="width: 18rem;">
                     <div class="card-header">
-                        ${manager.getName()}: ${manager.getRole()}
+                        ${manager[0].getName()}: ${manager[0].getRole()}
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Employee ID: ${manager.getId()}</li>
-                        <li class="list-group-item">Email: ${manager.getEmail()}</li>
-                        <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
+                        <li class="list-group-item">Employee ID: ${manager[0].getId()}</li>
+                        <li class="list-group-item">Email: ${manager[0].getEmail()}</li>
+                        <li class="list-group-item">Office Number: ${manager[0].officeNumber}</li>
                     </ul>
                 </div>`);
 
