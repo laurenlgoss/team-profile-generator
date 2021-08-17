@@ -5,16 +5,6 @@ const Manager = require("./lib/manager");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 
-// Create empty employee array
-let employeeArray = [];
-
-const nextQuestion = [{
-    type: "list",
-    message: "Choose a new team member, or choose done if there are no more members:",
-    choices: ["Engineer", "Intern", "Done"],
-    name: "next",
-}];
-
 // Create an array of questions to gather manager information
 const managerQuestions = [
     {
@@ -38,6 +28,14 @@ const managerQuestions = [
         name: "officeNumber",
     },
 ];
+
+// Create a question to ask user if they want to add another team member
+const nextQuestion = [{
+    type: "list",
+    message: "Choose a new team member, or choose done if there are no more members:",
+    choices: ["Engineer", "Intern", "Done"],
+    name: "next",
+}];
 
 // Create an array of questions to gather engineer information
 const engineerQuestions = [
@@ -87,6 +85,23 @@ const internQuestions = [
     },
 ];
 
+// Create empty employee array
+let employeeArray = [];
+
+// Initialize inquirer, write HTML with inquirer responses
+function init() {
+    inquirer
+        .prompt(managerQuestions)
+        .then((response) => {
+            // Create new manager from inquirer responses
+            let newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
+            employeeArray.push(newManager);
+
+            return mainMenu();
+        });
+}
+
+// Run nextQuestion in inquirer, determine whether user wants to add more team members or finish, write index.html file from inquirer responses
 function mainMenu() {
     inquirer
         .prompt(nextQuestion)
@@ -117,24 +132,13 @@ function mainMenu() {
                             return mainMenu();
                         })
                 }
-            } else {
+            } 
+            // If user is done creating team,
+            else {
                 // Write index.html file
                 writeToFile("./dist/index.html", generateHtml(generateCardHtml(employeeArray)));
             }
         })
-}
-
-// Initialize inquirer, write HTML with inquirer responses
-function init() {
-    inquirer
-        .prompt(managerQuestions)
-        .then((response) => {
-            // Create new manager from inquirer responses
-            let newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
-            employeeArray.push(newManager);
-
-            return mainMenu();
-        });
 }
 
 // Write new file
@@ -151,7 +155,7 @@ function generateCardHtml(employeeArray) {
     // Create empty card array
     let cardArray = [];
 
-    // Create new arrays for engineers and interns
+    // Create new arrays for manager, engineers, and interns
     let manager = employeeArray.filter(employee => employee.getRole() === "Manager");
     let engineerArray = employeeArray.filter(employee => employee.getRole() === "Engineer");
     let internArray = employeeArray.filter(employee => employee.getRole() === "Intern");
@@ -163,7 +167,7 @@ function generateCardHtml(employeeArray) {
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Employee ID: ${manager[0].getId()}</li>
-                        <li class="list-group-item">Email: ${manager[0].getEmail()}</li>
+                        <li class="list-group-item">Email: <a href=mailto:${manager[0].getEmail()}>${manager[0].getEmail()}</a></li>
                         <li class="list-group-item">Office Number: ${manager[0].officeNumber}</li>
                     </ul>
                 </div>`);
@@ -176,8 +180,8 @@ function generateCardHtml(employeeArray) {
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Employee ID: ${engineerArray[i].getId()}</li>
-                        <li class="list-group-item">Email: ${engineerArray[i].getEmail()}</li>
-                        <li class="list-group-item">GitHub username: ${engineerArray[i].getGithub()}</li>
+                        <li class="list-group-item">Email: <a href=mailto:${engineerArray[i].getEmail()}>${engineerArray[i].getEmail()}</a></li>
+                        <li class="list-group-item">GitHub Username: <a href=https://github.com/${engineerArray[i].github} target="_blank">${engineerArray[i].getGithub()}</a></li>
                     </ul>
                 </div>`);
     }
@@ -190,7 +194,7 @@ function generateCardHtml(employeeArray) {
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Employee ID: ${internArray[i].getId()}</li>
-                        <li class="list-group-item">Email: ${internArray[i].getEmail()}</li>
+                        <li class="list-group-item">Email: <a href=mailto:${internArray[i].getEmail()}>${internArray[i].getEmail()}</a></li>
                         <li class="list-group-item">School: ${internArray[i].getSchool()}</li>
                     </ul>
                 </div>`);
