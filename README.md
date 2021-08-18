@@ -35,7 +35,7 @@ The user can add as many team members as they wish until they choose to end the 
 
 ## Tests
 
-![Walkthrough Video](./src/team-profile-generator.gif)
+![Walkthrough Video](./team-profile-generator.gif)
 
 ## Questions
 
