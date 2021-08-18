@@ -1,6 +1,6 @@
 /* Header */
 header {
-    background-image: linear-gradient(to right, var(--primary), var(--purple));
+    background-image: linear-gradient(to right, var(--primary), var(--info));
 }
 
 header h1 {
@@ -13,4 +13,10 @@ header h1 {
 .custom-card {
     margin: 1rem;
     padding: 0rem;
+}
+
+.custom-card .card-header {
+    background-color: var(--gray);
+    color: white;
+    font-size: larger;
 }
