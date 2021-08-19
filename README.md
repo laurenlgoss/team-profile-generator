@@ -37,13 +37,13 @@ The user can add as many team members as they wish until they choose to end the 
 
 ### Team Building Walkthrough
 
-![Walkthrough Video](./team-profile-generator-walkthrough.gif)
+![Walkthrough Video](./images/team-profile-generator-walkthrough.gif)
 
 ### Testing Suites
 
 Application passes all 4 testing suites.
 
-![Testing Video](./team-profile-generator-testing.gif)
+![Testing Video](./images/team-profile-generator-testing.gif)
 
 ## Questions
 
