@@ -220,7 +220,7 @@ function generateHtml(employeeCards) {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./reset.css">
     <link rel="stylesheet" href="./style.css">
-    <title>Document</title>
+    <title>My Team</title>
 </head>
 
 <body>

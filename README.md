@@ -2,7 +2,7 @@
 
 ## Description
 
-JavaScript application that prompts the user to input team information into the terminal and outputs an index.html file with their team's information.
+JavaScript application that prompts the user to input team information into the terminal and outputs an HTML file with their team's information.
 
 ## Table of Contents
 
@@ -14,8 +14,8 @@ JavaScript application that prompts the user to input team information into the 
 ## Installation
 
 Required packages:
-  * Node
-  * Inquirer JS
+  * Node.js
+  * Inquirer.js
 
 ## Usage
 
@@ -31,7 +31,7 @@ If the user chooses to add an engineer, they will be prompted to input informati
 
 If the user chooses to add an intern, they will be prompted to input information about that team member including name, employee ID, email address, and school.
 
-The user can add as many team members as they wish until they choose to end the inquirer session. The application will take the user's input and insert their answers into an automatically generated index.html file. This new file will be placed within the /dist folder.
+The user can add as many team members as they wish until they choose to end the inquirer session. The application will take the user's input and insert their answers into an automatically generated `index.html` file. This new file will be placed within the `/dist` folder.
 
 ## Tests
 
@@ -47,7 +47,7 @@ Application passes all 4 testing suites.
 
 ### Example HTML
 
-![example.html](./images/example-html.png)
+![Example generated HTML page](./images/example-html.png)
 
 ## Questions
 
