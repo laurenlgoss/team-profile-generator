@@ -45,6 +45,10 @@ Application passes all 4 testing suites.
 
 ![Testing Video](./images/team-profile-generator-testing.gif)
 
+### Example HTML
+
+![example.html](./images/example-html.png)
+
 ## Questions
 
 Do you have questions? Contact me here:
